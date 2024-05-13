@@ -125,7 +125,7 @@ def derivatives(t, y):
 
 
 # ------------------------- Solve ODE System --------------------------------
-sol = solve_ivp(derivatives, [0, 7000], [v0, psi0, theta0, h0], max_step=1)
+sol = solve_ivp(derivatives, [0, t_max], [v0, psi0, theta0, h0], max_step=1)
 
 # ------------------------- Post processing results -------------------------
 vrel = sol.y[0] / 1000
@@ -342,5 +342,4 @@ ax.set_xlim([-1000, 2500])
 ax.set_ylim([5500, 6800])
 ax.set_aspect("equal")
 plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
-plt.savefig("eartht.png", dpi=400)
 plt.show()
