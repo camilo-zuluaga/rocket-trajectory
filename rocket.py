@@ -1,6 +1,5 @@
 #####################################################
 ## Simple Rocket Simulation using ODEs into Orbit  ##
-## Author: camilo-zuluaga                          ##
 #####################################################
 
 
@@ -49,15 +48,16 @@ m0s2 = mprop2 + mstruc2 + mpl
 
 # Thrust Burn times
 tburn = 138.69
-tburn2 = 250.89
+tburn2 = 252.89
+
 
 # Flow rates
 m_dot = mprop / tburn
 m_dot2 = mprop2 / tburn2
 
 # Thrust values
-Thrust = 218.982 * 1000
-Thrust2 = 29.22 * 1000
+Thrust = 218.985 * 1000
+Thrust2 = 28.152 * 1000
 
 # Pitch over altitude
 hturn = 1430
@@ -69,7 +69,7 @@ max_tburn = tburn + tburn2
 # ------------------------- Initial conditions for ODES -------------------------
 t_max = max_tburn
 v0 = 0
-psi0 = 10.29 * DEG
+psi0 = 10.489 * DEG
 theta0 = 0
 h0 = 0
 
@@ -125,7 +125,7 @@ def derivatives(t, y):
 
 
 # ------------------------- Solve ODE System --------------------------------
-sol = solve_ivp(derivatives, [0, t_max], [v0, psi0, theta0, h0], max_step=1)
+sol = solve_ivp(derivatives, [0, 7000], [v0, psi0, theta0, h0], max_step=1)
 
 # ------------------------- Post processing results -------------------------
 vrel = sol.y[0] / 1000
@@ -244,6 +244,7 @@ plt.plot(dr, h, zorder=3, color="#0080FF")
 plt.ylabel("$Height\ (km)$")
 plt.xlabel("$Downrange\ (km)$")
 plt.axhline(y=100, color="#CBCBCB", zorder=2)
+plt.axhline(y=160, color="#1F32EC", zorder=2)
 plt.text(
     x=1.03 * max(dr),
     y=100 + 5,
@@ -254,9 +255,9 @@ plt.text(
     zorder=4,
 )
 stageSep = plt.scatter(102.45, 67.8404088, color="#FF4600", zorder=4, alpha=0.9)
-orbitReach = plt.scatter(1200, 208.35, color="#7C00FF", zorder=4, alpha=0.9)
+# orbitReach = plt.scatter(1200, 208.35, color="#7C00FF", zorder=4, alpha=0.9)
 plt.legend(
-    [stageSep, orbitReach],
+    [stageSep],
     ["Stage Separation", "Orbit Reach"],
     loc="upper left",
 )
@@ -338,8 +339,8 @@ x_traj2 = htot * np.cos(theta)
 y_traj2 = htot * np.sin(theta)
 ax.plot(y_traj1, x_traj1, color="#5B78EC", lw=1)
 ax.plot(y_traj2, x_traj2, color="#5B78EC", lw=1)
-ax.set_xlim([-1000, 2500])
-ax.set_ylim([5500, 6800])
+# ax.set_xlim([-1000, 2500])
+# ax.set_ylim([5500, 6800])
 ax.set_aspect("equal")
 plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
 plt.show()
