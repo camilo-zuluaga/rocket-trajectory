@@ -15,6 +15,7 @@ import scienceplots
 import numpy as np
 from scipy.integrate import solve_ivp
 
+plt.style.use("dark_background")
 plt.style.use(["science", "no-latex"])
 
 # ------------------------- Constants -------------------------
@@ -57,7 +58,7 @@ m_dot2 = mprop2 / tburn2
 
 # Thrust values
 Thrust = 218.985 * 1000
-Thrust2 = 28.152 * 1000
+Thrust2 = 28.192 * 1000
 
 # Pitch over altitude
 hturn = 1430
@@ -125,7 +126,7 @@ def derivatives(t, y):
 
 
 # ------------------------- Solve ODE System --------------------------------
-sol = solve_ivp(derivatives, [0, 7000], [v0, psi0, theta0, h0], max_step=1)
+sol = solve_ivp(derivatives, [0, t_max], [v0, psi0, theta0, h0], max_step=1)
 
 # ------------------------- Post processing results -------------------------
 vrel = sol.y[0] / 1000
@@ -160,15 +161,17 @@ tD = np.linspace(0, h[-1], len(thrust_force))
 #     zorder=4,
 # )
 # stageSep = plt.scatter(102.45, 67.8404088, color="#FF4600", zorder=4, alpha=0.9)
-# orbitReach = plt.scatter(1200, 208.35, color="#7C00FF", zorder=4, alpha=0.9)
+# orbitReach = plt.scatter(540, 160, color="#7C00FF", zorder=4, alpha=0.9)
+# altitude = plt.scatter(1200, 184, color="#351FEC", zorder=4, alpha=0.9)
 # plt.legend(
-#     [stageSep, orbitReach],
-#     ["Stage Separation", "Orbit Reach"],
+#     [stageSep, orbitReach, altitude],
+#     ["Stage Separation", "Orbit Reach", "184 Km"],
 #     fontsize=8,
 #     loc="upper left",
 # )
 # plt.axhline(y=0, color="#008C13")
 # plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+# plt.savefig("height_vs_downrange.png", dpi=400)
 # plt.show()
 
 # # ~~~~~~~~~~~~~~~~~~~~~~ Plotting Forces vs Time ~~~~~~~~~~~~~~~~~~~~~~
@@ -180,6 +183,7 @@ tD = np.linspace(0, h[-1], len(thrust_force))
 # plt.xlabel("$Time\ (s)$")
 # plt.legend(["Thrust", "Drag", "Gravity"], loc="upper right")
 # plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+# plt.savefig("forces_vs_time.png", dpi=400)
 # plt.show()
 
 # # ~~~~~~~~~~~~~~~~~~~~~~ Plotting Mass vs Time ~~~~~~~~~~~~~~~~~~~~~~
@@ -187,7 +191,15 @@ tD = np.linspace(0, h[-1], len(thrust_force))
 # plt.plot(tA, mass, color="#0080FF")
 # plt.ylabel("$Mass\ (Kg)$")
 # plt.xlabel("$Time\ (s)$")
+# stage_sep = plt.scatter(tburn, 3650, color="#FF4600", zorder=4, alpha=0.9)
+# plt.legend(
+#     [stage_sep],
+#     ["Stage Separation"],
+#     fontsize=8,
+#     loc="upper right",
+# )
 # plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+# plt.savefig("mass_vs_time.png", dpi=400)
 # plt.show()
 
 # # ~~~~~~~~~~~~~~~~~~~~~~ Plotting Velocity vs Time ~~~~~~~~~~~~~~~~~~~~~~
@@ -196,11 +208,12 @@ tD = np.linspace(0, h[-1], len(thrust_force))
 # plt.ylabel("$Velocity\ (Km/s)$")
 # plt.xlabel("$Time\ (s)$")
 # stage_sep = plt.scatter(tburn, 2.93, color="#FF4600", zorder=4, alpha=0.9)
-# orbit_reached = plt.scatter(388.5, 7.93, color="#7e2e8c", zorder=4, alpha=0.9)
+# orbit_reached = plt.scatter(390.247, 7.8, color="#7e2e8c", zorder=4, alpha=0.9)
 # plt.legend(
-#     [stage_sep, orbit_reached], ["Stage Separation", "Orbit Reached"], loc="upper left"
+#     [stage_sep, orbit_reached], ["Stage Separation", "Orbit Speed"], loc="upper left"
 # )
 # plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+# plt.savefig("velocity_vs_time.png", dpi=400)
 # plt.show()
 
 # # ~~~~~~~~~~~~~~~~~~~~~~ Plotting Dynamic Pressure vs Height ~~~~~~~~~~~~~~~~~~~~~~
@@ -209,15 +222,16 @@ tD = np.linspace(0, h[-1], len(thrust_force))
 # plt.ylabel("$Dynamic Pressure\ (KPa)$")
 # plt.xlabel("$Height\ (Km)$")
 # plt.text(
-#     x=218,
-#     y=29,
+#     x=190,
+#     y=30.5,
 #     s="$Maximum\ Dynamic\ Pressure$",
 #     horizontalalignment="right",
 #     verticalalignment="bottom",
 #     color="#d8521a",
 # )
-# plt.axhline(y=33.2, color="#d8521a", linestyle="--")
+# plt.axhline(y=33.5, color="#d8521a", linestyle="--")
 # plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+# plt.savefig("dynamic_pressure_vs_height.png", dpi=400)
 # plt.show()
 
 # # ~~~~~~~~~~~~~~~~~~~~~~ Plotting Altitude vs Velocity ~~~~~~~~~~~~~~~~~~~~~~
@@ -225,26 +239,25 @@ tD = np.linspace(0, h[-1], len(thrust_force))
 # plt.plot(vrel, h, color="#0080FF")
 # plt.ylabel("$Height\ (Km)$")
 # plt.xlabel("$Velocity\ (Km/s)$")
-# stage_sep = plt.scatter(2.93, 68.35, color="#FF4600", zorder=4, alpha=0.9)
-# orbit_reached = plt.scatter(7.93, 209.5, color="#7e2e8c", zorder=4, alpha=0.9)
+# stage_sep = plt.scatter(2.95, 68.37, color="#FF4600", zorder=4, alpha=0.9)
+# orbit_reached = plt.scatter(7.85, 184.2, color="#7e2e8c", zorder=4, alpha=0.9)
 # plt.legend(
-#     [stage_sep, orbit_reached], ["Stage Separation", "Orbit Reached"], loc="upper left"
+#     [stage_sep, orbit_reached], ["Stage Separation", "Orbital Speed"], loc="upper left"
 # )
 # plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+# plt.savefig("altitude_vs_velocity.png", dpi=400)
 # plt.show()
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~ Plotting all in one ~~~~~~~~~~~~~~~~~~~~~~
 # Comment all of this and uncomment from line 149 to 234 to see individual plots
 plt.figure(1)
-
 # Left side plots
 plt.subplot(231)
 plt.plot(dr, h, zorder=3, color="#0080FF")
 plt.ylabel("$Height\ (km)$")
 plt.xlabel("$Downrange\ (km)$")
 plt.axhline(y=100, color="#CBCBCB", zorder=2)
-plt.axhline(y=160, color="#1F32EC", zorder=2)
 plt.text(
     x=1.03 * max(dr),
     y=100 + 5,
@@ -254,15 +267,17 @@ plt.text(
     color="#A4A4A4",
     zorder=4,
 )
-stageSep = plt.scatter(102.45, 67.8404088, color="#FF4600", zorder=4, alpha=0.9)
-# orbitReach = plt.scatter(1200, 208.35, color="#7C00FF", zorder=4, alpha=0.9)
+stageSep = plt.scatter(109.25, 67.8404088, color="#FF4600", zorder=4, alpha=0.7)
+orbitReach = plt.scatter(540, 160, color="#7C00FF", zorder=4, alpha=0.7)
+altitude = plt.scatter(1200, 184, color="#351FEC", zorder=4, alpha=0.7)
 plt.legend(
-    [stageSep],
-    ["Stage Separation", "Orbit Reach"],
+    [stageSep, orbitReach, altitude],
+    ["Stage Separation", "Orbit Reach", "184 Km"],
+    fontsize=8,
     loc="upper left",
 )
 plt.axhline(y=0, color="#008C13")
-plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1, alpha=0.2)
 
 plt.subplot(232)
 plt.plot(tA, np.array(thrust_force) / 1000, color="#0080FF")
@@ -271,51 +286,58 @@ plt.plot(tA, np.array(gravity_force) / 1000, color="#d8521a")
 plt.ylabel("$Forces\ (Kilo Newtons)$")
 plt.xlabel("$Time\ (s)$")
 plt.legend(["Thrust", "Drag", "Gravity"], loc="upper right")
-plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1, alpha=0.2)
 
 plt.subplot(233)
 plt.plot(tA, mass, color="#0080FF")
 plt.ylabel("$Mass\ (Kg)$")
 plt.xlabel("$Time\ (s)$")
-plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+stage_sep = plt.scatter(tburn, 3650, color="#FF4600", zorder=4, alpha=0.7)
+plt.legend(
+    [stage_sep],
+    ["Stage Separation"],
+    fontsize=8,
+    loc="upper right",
+)
+plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1, alpha=0.2)
 
 # Right side plots
 plt.subplot(234)
 plt.plot(tS, vrel, color="#0080FF")
 plt.ylabel("$Velocity\ (Km/s)$")
 plt.xlabel("$Time\ (s)$")
-stage_sep = plt.scatter(tburn, 2.93, color="#FF4600", zorder=4, alpha=0.9)
-orbit_reached = plt.scatter(388.5, 7.93, color="#7e2e8c", zorder=4, alpha=0.9)
+stage_sep = plt.scatter(tburn, 2.93, color="#FF4600", zorder=4, alpha=0.7)
+orbit_reached = plt.scatter(390.247, 7.8, color="#7e2e8c", zorder=4, alpha=0.7)
 plt.legend(
-    [stage_sep, orbit_reached], ["Stage Separation", "Orbit Reached"], loc="upper left"
+    [stage_sep, orbit_reached], ["Stage Separation", "Orbit Speed"], loc="upper left"
 )
-plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1, alpha=0.2)
 
 plt.subplot(235)
 plt.plot(tD, dynamic_pressure, color="#0080FF")
 plt.ylabel("$Dynamic Pressure\ (KPa)$")
 plt.xlabel("$Height\ (Km)$")
 plt.text(
-    x=218,
-    y=30.2,
+    x=190,
+    y=30.5,
     s="$Maximum\ Dynamic\ Pressure$",
     horizontalalignment="right",
     verticalalignment="bottom",
     color="#d8521a",
 )
-plt.axhline(y=33.2, color="#d8521a", linestyle="--")
-plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+plt.axhline(y=33.5, color="#d8521a", linestyle="--")
+plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1, alpha=0.2)
 
 plt.subplot(236)
 plt.plot(vrel, h, color="#0080FF")
 plt.ylabel("$Height\ (Km)$")
 plt.xlabel("$Velocity\ (Km/s)$")
-stage_sep = plt.scatter(2.93, 68.35, color="#FF4600", zorder=4, alpha=0.9)
-orbit_reached = plt.scatter(7.93, 209.5, color="#7e2e8c", zorder=4, alpha=0.9)
+stage_sep = plt.scatter(2.95, 68.37, color="#FF4600", zorder=4, alpha=0.9)
+orbit_reached = plt.scatter(7.85, 184.2, color="#7e2e8c", zorder=4, alpha=0.9)
 plt.legend(
-    [stage_sep, orbit_reached], ["Stage Separation", "Orbit Reached"], loc="upper left"
+    [stage_sep, orbit_reached], ["Stage Separation", "Orbital Speed"], loc="upper left"
 )
-plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1, alpha=0.2)
 
 plt.show()
 
@@ -342,5 +364,5 @@ ax.plot(y_traj2, x_traj2, color="#5B78EC", lw=1)
 # ax.set_xlim([-1000, 2500])
 # ax.set_ylim([5500, 6800])
 ax.set_aspect("equal")
-plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1)
+plt.grid(True, linestyle="--", linewidth=1, color="#ECECEC", zorder=1, alpha=0.2)
 plt.show()
